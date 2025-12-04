@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useGameStore, getXpForNextLevel } from '../store/gameStore';
 import { Trophy, Lock, Medal, Star, Zap, Crown } from 'lucide-react';
+import { ConfirmationModal } from '../components/ConfirmationModal';
 
 export const Profile: React.FC = () => {
     const { level, xp, streak, achievements } = useGameStore();
+    const [showResetModal, setShowResetModal] = useState(false);
     const nextLevelXp = getXpForNextLevel(level);
     const progress = (xp / nextLevelXp) * 100;
 
@@ -107,6 +109,43 @@ export const Profile: React.FC = () => {
                     ))}
                 </div>
             </div>
+            {/* Danger Zone */}
+            <div className="mt-12 border-t border-red-500/20 pt-8">
+                <h2 className="text-xl font-bold text-red-500 mb-4 font-display flex items-center gap-2">
+                    <Zap className="h-5 w-5" />
+                    Danger Zone
+                </h2>
+                <div className="bg-red-500/5 border border-red-500/10 rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div>
+                        <h3 className="font-bold text-game-text">Reset Progress</h3>
+                        <p className="text-sm text-game-muted mt-1">
+                            This will permanently delete all your progress, jobs, and contacts.
+                            <br />
+                            <span className="text-red-400 font-medium">This action cannot be undone.</span>
+                        </p>
+                    </div>
+                    <button
+                        onClick={() => setShowResetModal(true)}
+                        className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-lg font-medium transition-colors border border-red-500/20"
+                    >
+                        Reset Everything
+                    </button>
+                </div>
+            </div>
+
+            <ConfirmationModal
+                isOpen={showResetModal}
+                title="Reset All Progress?"
+                message="This will permanently delete your XP, Level, Jobs, and Contacts. This action cannot be undone."
+                confirmText="Yes, Reset Everything"
+                cancelText="Cancel"
+                isDangerous={true}
+                onConfirm={() => {
+                    useGameStore.getState().resetState();
+                    window.location.reload();
+                }}
+                onCancel={() => setShowResetModal(false)}
+            />
         </div>
     );
 };

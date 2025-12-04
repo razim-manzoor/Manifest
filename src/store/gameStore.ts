@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { v4 as uuidv4 } from 'uuid';
 
 export type JobStatus = 'Applied' | 'Online Assessment' | 'Interview' | 'Offer' | 'Rejected';
@@ -74,6 +75,7 @@ interface GameState {
     visitVisaExpiry: string | null; // ISO Date string
     setName: (name: string) => void;
     setVisitVisaExpiry: (date: string | null) => void;
+    resetState: () => void;
 }
 
 export const getXpForNextLevel = (level: number) => 300 + (level * 50);
@@ -104,7 +106,7 @@ const calculateProgression = (currentXp: number, currentLevel: number, addedXp: 
     return { xp, level, showLevelUpModal };
 };
 
-export const useGameStore = create<GameState>((set, get) => ({
+export const useGameStore = create<GameState>()(persist((set, get) => ({
     xp: 0,
     level: 1,
     streak: 0,
@@ -297,6 +299,10 @@ export const useGameStore = create<GameState>((set, get) => ({
     setName: (name) => set({ name }),
     setVisitVisaExpiry: (date) => set({ visitVisaExpiry: date }),
 
+    resetState: () => {
+        useGameStore.persist.clearStorage();
+    },
+
     // Helper to check achievements (called after actions)
     checkAchievements: () => set((state) => {
         const newAchievements = [...state.achievements];
@@ -323,4 +329,21 @@ export const useGameStore = create<GameState>((set, get) => ({
         }
         return {};
     }),
-}));
+}),
+    {
+        name: 'job-hunter-storage',
+        partialize: (state) => ({
+            xp: state.xp,
+            level: state.level,
+            streak: state.streak,
+            lastCompletedDate: state.lastCompletedDate,
+            jobs: state.jobs,
+            dailyTasks: state.dailyTasks,
+            contacts: state.contacts,
+            achievements: state.achievements,
+            lastUnlockedAchievement: state.lastUnlockedAchievement,
+            name: state.name,
+            visitVisaExpiry: state.visitVisaExpiry,
+        }),
+    }
+));
