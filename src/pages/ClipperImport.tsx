@@ -4,11 +4,21 @@ import { useGameStore } from '../store/gameStore';
 import { Sparkles, CheckCircle, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 
+interface JobData {
+    position: string;
+    company: string;
+    location: string;
+    salary: string;
+    status: 'Applied';
+    link: string;
+    description: string;
+}
+
 export const ClipperImport: React.FC = () => {
     const navigate = useNavigate();
     const { addJob } = useGameStore();
     const [status, setStatus] = useState<'waiting' | 'success' | 'error'>('waiting');
-    const [jobData, setJobData] = useState<any>(null);
+    const [jobData, setJobData] = useState<JobData | null>(null);
 
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {

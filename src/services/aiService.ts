@@ -27,9 +27,10 @@ export class AIService {
                 return await this.generateGemini(prompt);
             }
             return { text: '', error: 'Unsupported provider' };
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             console.error('AI Service Error:', error);
-            return { text: '', error: error.message || 'Unknown error' };
+            return { text: '', error: errorMessage };
         }
     }
 
@@ -40,7 +41,7 @@ export class AIService {
 
         // Fallback Strategy: Try newest efficient models first, then robust, then legacy.
         const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"];
-        let lastError;
+        let lastError: unknown;
 
         for (const modelName of modelsToTry) {
             try {
@@ -48,14 +49,14 @@ export class AIService {
                 const result = await model.generateContent(prompt);
                 const response = await result.response;
                 return { text: response.text() };
-            } catch (error: any) {
-                console.warn(`AI Service: Failed with ${modelName}. Retrying...`, error.message);
+            } catch (error: unknown) {
+                console.warn(`AI Service: Failed with ${modelName}. Retrying...`, error instanceof Error ? error.message : 'Unknown error');
                 lastError = error;
                 // Continue to next model
             }
         }
 
-        throw new Error(`Oracle Error: Could not connect to any Gemini model. Last error: ${lastError?.message}`);
+        throw new Error(`Oracle Error: Could not connect to any Gemini model. Last error: ${lastError instanceof Error ? lastError.message : 'Unknown error'}`);
     }
 
     private async generateOllama(prompt: string): Promise<AIResponse> {

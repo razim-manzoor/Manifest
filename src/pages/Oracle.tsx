@@ -10,13 +10,15 @@ import { AIService } from '../services/aiService';
 export const Oracle: React.FC = () => {
     const { apiKey, name, aiProvider, ollamaConfig, resumeContent, level } = useGameStore(); // Added level
     const [activeTab, setActiveTab] = useState<'scribe' | 'chameleon'>('scribe');
+    
+    type Tone = 'Professional' | 'Confident' | 'Urgent' | 'Witty';
 
     const LEVEL_ADVANCED_TONES = 5;
     const LEVEL_CHAMELEON = 10;
 
     // Scribe State
     const [jobDescription, setJobDescription] = useState('');
-    const [tone, setTone] = useState<'Professional' | 'Confident' | 'Urgent' | 'Witty'>('Professional');
+    const [tone, setTone] = useState<Tone>('Professional');
     const [generatedLetter, setGeneratedLetter] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const [copied, setCopied] = useState(false);
@@ -30,7 +32,7 @@ export const Oracle: React.FC = () => {
         if (resumeContent && !resumeText) {
             setResumeText(resumeContent);
         }
-    }, [resumeContent]);
+    }, [resumeContent, resumeText]);
 
     const generateCoverLetter = async () => {
         if (aiProvider === 'gemini' && !apiKey) return;
@@ -244,7 +246,7 @@ export const Oracle: React.FC = () => {
                                         <label className="block text-sm font-medium text-game-muted mb-2">Tone</label>
                                         <select
                                             value={tone}
-                                            onChange={(e) => setTone(e.target.value as any)}
+                                            onChange={(e) => setTone(e.target.value as Tone)}
                                             className="w-full p-3 bg-game-card/5 border border-game-card/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/50 text-game-text text-sm"
                                         >
                                             <option value="Professional">Professional (Standard)</option>

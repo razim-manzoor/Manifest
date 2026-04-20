@@ -56,6 +56,7 @@ export const Layout: React.FC = () => {
                     <nav className="space-y-2">
                         <NavLink to="/" icon={<LayoutDashboard size={20} strokeWidth={1.5} />} label="Dashboard" active={location.pathname === '/'} />
                         <NavLink to="/tracker" icon={<Briefcase size={20} strokeWidth={1.5} />} label="Job Tracker" active={location.pathname === '/tracker'} />
+                        <NavLink to="/oracle" icon={<Sparkles size={20} strokeWidth={1.5} />} label="The Oracle" active={location.pathname === '/oracle'} />
                         <NavLink to="/networking" icon={<Users size={20} strokeWidth={1.5} />} label="Networking" active={location.pathname === '/networking'} />
                         <NavLink to="/profile" icon={<User size={20} strokeWidth={1.5} />} label="Profile" active={location.pathname === '/profile'} />
                     </nav>
@@ -109,6 +110,7 @@ export const Layout: React.FC = () => {
                             <Zap className="h-6 w-6 text-game-accent" strokeWidth={1.5} />
                         </button>
                     </div>
+                    <MobileNavLink to="/oracle" icon={<Sparkles size={22} strokeWidth={1.5} />} label="Oracle" active={location.pathname === '/oracle'} />
                     <MobileNavLink to="/networking" icon={<Users size={22} strokeWidth={1.5} />} label="Network" active={location.pathname === '/networking'} />
                     <MobileNavLink to="/profile" icon={<User size={22} strokeWidth={1.5} />} label="Profile" active={location.pathname === '/profile'} />
                 </div>

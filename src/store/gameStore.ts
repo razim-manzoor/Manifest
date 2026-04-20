@@ -45,7 +45,7 @@ export interface Achievement {
     unlocked: boolean;
 }
 
-interface GameState {
+export interface GameState {
     xp: number;
     level: number;
     streak: number;
