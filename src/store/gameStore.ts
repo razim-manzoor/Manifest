@@ -72,6 +72,13 @@ interface GameState {
     checkAchievements: () => void;
     name: string;
     visitVisaExpiry: string | null;
+    aiProvider: 'gemini' | 'openai' | 'ollama';
+    apiKey: string;
+    ollamaConfig: {
+        url: string;
+        model: string;
+    };
+    resumeContent: string;
     setName: (name: string) => void;
     setVisitVisaExpiry: (date: string | null) => void;
     resetState: () => void;
@@ -200,6 +207,13 @@ const createBaseState = () => ({
     showLevelUpModal: false,
     name: 'Hunter',
     visitVisaExpiry: null as string | null,
+    aiProvider: 'ollama' as const,
+    apiKey: '',
+    ollamaConfig: {
+        url: 'http://localhost:11434',
+        model: 'llama3',
+    },
+    resumeContent: '',
 });
 
 export const useGameStore = create<GameState>()(persist((set, get) => ({
@@ -413,6 +427,10 @@ export const useGameStore = create<GameState>()(persist((set, get) => ({
         lastUnlockedAchievement: state.lastUnlockedAchievement,
         name: state.name,
         visitVisaExpiry: state.visitVisaExpiry,
+        aiProvider: state.aiProvider,
+        apiKey: state.apiKey,
+        ollamaConfig: state.ollamaConfig,
+        resumeContent: state.resumeContent,
     }),
     onRehydrateStorage: () => (state) => {
         if (!state) {
