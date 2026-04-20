@@ -1,0 +1,43 @@
+{
+    "manifest_version": 3,
+    "name": "The Manifest: Job Clipper",
+    "version": "1.0",
+    "description": "Clip text from any webpage and send it to your local Manifest board.",
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ],
+    "action": {
+        "default_popup": "popup/popup.html",
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png"
+        }
+    },
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "scripts/content.js"
+            ]
+        },
+        {
+            "matches": [
+                "http://localhost:3101/*",
+                "http://127.0.0.1:3101/*"
+            ],
+            "js": [
+                "scripts/injector.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ]
+}

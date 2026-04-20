@@ -115,23 +115,21 @@ export const Networking: React.FC = () => {
                         </div>
 
                         <div className="mt-auto pt-4 flex gap-2">
-                            {contact.link ? (
+                            <button
+                                onClick={() => logContactInteraction(contact.id)}
+                                className="flex-1 rounded-xl bg-game-card/5 hover:bg-game-card/10 border border-game-card/5 hover:border-game-card/10 py-3 text-sm font-medium text-game-text transition-all duration-300 hover:shadow-lg hover:shadow-game-card/5 active:scale-95"
+                            >
+                                Send Signal (+50 XP)
+                            </button>
+                            {contact.link && (
                                 <a
                                     href={contact.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-game-primary/10 hover:bg-game-primary/20 border border-game-primary/20 py-3 text-sm font-bold text-game-primary transition-all duration-300"
+                                    className="flex items-center justify-center rounded-xl bg-game-primary/10 hover:bg-game-primary/20 border border-game-primary/20 px-4 py-3 text-sm font-bold text-game-primary transition-all duration-300"
                                 >
                                     <ExternalLink className="h-4 w-4" />
-                                    Open Profile
                                 </a>
-                            ) : (
-                                <button
-                                    onClick={() => logContactInteraction(contact.id)}
-                                    className="flex-1 rounded-xl bg-game-card/5 hover:bg-game-card/10 border border-game-card/5 hover:border-game-card/10 py-3 text-sm font-medium text-game-text transition-all duration-300 hover:shadow-lg hover:shadow-game-card/5 active:scale-95"
-                                >
-                                    Send Signal (+15 XP)
-                                </button>
                             )}
                         </div>
                     </motion.div>
